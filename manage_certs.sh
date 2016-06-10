@@ -1,23 +1,26 @@
 #!/usr/bin/bash
+###############################################################################
+# @author: facundovictor: facundovt@gmail.com
+###############################################################################
 # REMEMBER: you can't use your account private key as your domain private key!!
-
-
-# Directories where you will store your files
+###############################################################################
+# Directories where you will store your files. A unique volume should be
+# created for each Directory.
 KEY_DIR=./key
 CSR_DIR=./csr
 CRT_DIR=./crt
-
+ACME_CHALLENGE_DIR=./challenges
+###############################################################################
 # Binaries
 ACME_TINY=./acme-tiny/acme_tiny.py
 OPENSSL=/usr/bin/openssl
 PYTHON=/usr/bin/python
 ###############################################################################
 # EXIT codes
-
 SUCCESS=0
 EMPTY_PARAM=1
 OPENSSL_ERROR=2
-
+ACME_ERROR=2
 ###############################################################################
 
 helpme(){
