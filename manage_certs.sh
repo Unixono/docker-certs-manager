@@ -8,7 +8,16 @@ CSR_DIR=./csr
 CRT_DIR=./crt
 
 # Binaries
+ACME_TINY=./acme-tiny/acme_tiny.py
 OPENSSL=/usr/bin/openssl
+PYTHON=/usr/bin/python
+###############################################################################
+# EXIT codes
+
+SUCCESS=0
+EMPTY_PARAM=1
+OPENSSL_ERROR=2
+
 ###############################################################################
 
 helpme(){
