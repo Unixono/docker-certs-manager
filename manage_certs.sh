@@ -2,6 +2,9 @@
 ###############################################################################
 # @author: facundovictor: facundovt@gmail.com
 ###############################################################################
+# The volume for the challenge directory should be served in:
+#   http://<domain>/.well-known/acme-challenge/
+#
 # REMEMBER: you can't use your account private key as your domain private key!!
 ###############################################################################
 # Directories where you will store your files. A unique volume should be
@@ -9,7 +12,6 @@
 KEY_DIR=./key
 CSR_DIR=./csr
 CRT_DIR=./crt
-ACME_CHALLENGE_DIR=./challenges
 ###############################################################################
 # Binaries
 ACME_TINY=./acme-tiny/acme_tiny.py
@@ -26,7 +28,7 @@ ACME_ERROR=2
 helpme(){
     echo -e ">> Certificate manager \n"
     echo -e "Usage: $0 { generate_key { account | domain <domain-value> } } | \
-generate_csr <domain-value> | generate_crt <domain-value> }\n"
+generate_csr <domain-value> | generate_crt <domain-value> <challenge-dir> }\n"
     echo "NOTE: you can't use your account private key as your domain private \
 key!"
 }
@@ -68,7 +70,11 @@ generate_certificate(){
         exit $EMPTY_PARAM
     fi
     mkdir -p $CRT_DIR
-    mkdir -p $ACME_CHALLENGE_DIR
+	if [ -z "$2" ] ; then
+        echo -e "ERROR: empty challenge dir"
+        exit $EMPTY_PARAM
+	fi
+	ACME_CHALLENGE_DIR="$2"
 	$PYTHON $ACME_TINY \
 		--account-key "${KEY_DIR}/account.key" \
 		--csr "${CSR_DIR}/${1}.csr" \
@@ -99,7 +105,7 @@ case "$1" in
         generate_certificate_signing_request "$2"
         ;;
     generate_crt)
-        generate_certificate "$2"
+        generate_certificate "$2" "$3"
         ;;
     *)
         helpme
