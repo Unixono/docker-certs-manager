@@ -33,6 +33,11 @@ generate_private_key(){
     fi
     mkdir -p $KEY_DIR
     $OPENSSL genrsa 4096 > "${KEY_DIR}/${1}.key"
+	RESULT=$?
+	if [ $RESULT -ne 0 ]; then
+	    echo -e "ERROR: Openssl error: $RESULT"
+		echo $OPENSSL_ERROR
+	fi
 }
 
 generate_certificate_signing_request(){
@@ -42,6 +47,11 @@ generate_certificate_signing_request(){
     fi
     mkdir -p $CSR_DIR
     $OPENSSL req -new -sha256 -key "${KEY_DIR}/${1}.key" -subj "/CN=${1}" > "${CSR_DIR}/${1}.csr"
+	RESULT=$?
+	if [ $RESULT -ne 0 ]; then
+	    echo -e "ERROR: Openssl error: $RESULT"
+		echo $OPENSSL_ERROR
+	fi
 }
 
 case "$1" in
@@ -59,7 +69,6 @@ case "$1" in
         esac
         ;;
     generate_csr)
-        echo "CSR"
         generate_certificate_signing_request "$2"
         ;;
     generate_crt)
