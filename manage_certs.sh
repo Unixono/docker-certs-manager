@@ -34,28 +34,50 @@ key!"
 generate_private_key(){
     if [ -z "$1" ] ; then
         echo -e "ERROR: empty account | domain name"
-        exit 1
+        exit $EMPTY_PARAM
     fi
     mkdir -p $KEY_DIR
     $OPENSSL genrsa 4096 > "${KEY_DIR}/${1}.key"
 	RESULT=$?
 	if [ $RESULT -ne 0 ]; then
 	    echo -e "ERROR: Openssl error: $RESULT"
-		echo $OPENSSL_ERROR
+		exit $OPENSSL_ERROR
 	fi
 }
 
 generate_certificate_signing_request(){
     if [ -z "$1" ] ; then
         echo -e "ERROR: empty domain"
-        exit 1
+        exit $EMPTY_PARAM
     fi
     mkdir -p $CSR_DIR
-    $OPENSSL req -new -sha256 -key "${KEY_DIR}/${1}.key" -subj "/CN=${1}" > "${CSR_DIR}/${1}.csr"
+    $OPENSSL req \
+			-new -sha256 \
+			-key "${KEY_DIR}/${1}.key" \
+			-subj "/CN=${1}" > "${CSR_DIR}/${1}.csr"
 	RESULT=$?
 	if [ $RESULT -ne 0 ]; then
 	    echo -e "ERROR: Openssl error: $RESULT"
-		echo $OPENSSL_ERROR
+		exit $OPENSSL_ERROR
+	fi
+}
+
+generate_certificate(){
+    if [ -z "$1" ] ; then
+        echo -e "ERROR: empty domain"
+        exit $EMPTY_PARAM
+    fi
+    mkdir -p $CRT_DIR
+    mkdir -p $ACME_CHALLENGE_DIR
+	$PYTHON $ACME_TINY \
+		--account-key "${KEY_DIR}/account.key" \
+		--csr "${CSR_DIR}/${1}.csr" \
+		--acme-dir $ACME_CHALLENGE_DIR > "${CRT_DIR}/${1}.crt"
+
+	RESULT=$?
+	if [ $RESULT -ne 0 ]; then
+	    echo -e "ERROR: ACME error: $RESULT"
+		exit $ACME_ERROR
 	fi
 }
 
@@ -77,7 +99,7 @@ case "$1" in
         generate_certificate_signing_request "$2"
         ;;
     generate_crt)
-        echo "CRT"
+        generate_certificate "$2"
         ;;
     *)
         helpme
