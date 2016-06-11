@@ -2,7 +2,7 @@
 ###############################################################################
 # @author: facundovictor: facundovt@gmail.com
 ###############################################################################
-# The volume for the challenge directory should be served in:
+# The volume for the challenge domain directory should be served in:
 #   http://<domain>/.well-known/acme-challenge/
 #
 # REMEMBER: you can't use your account private key as your domain private key!!
@@ -12,6 +12,7 @@
 KEY_DIR=./key
 CSR_DIR=./csr
 CRT_DIR=./crt
+CHALLENGE_DIR=./challenges
 ###############################################################################
 # Binaries
 ACME_TINY=./acme-tiny/acme_tiny.py
@@ -33,13 +34,23 @@ generate_csr <domain-value> | generate_crt <domain-value> <challenge-dir> }\n"
 key!"
 }
 
+generate_account_private_key(){
+    mkdir -p $KEY_DIR
+    $OPENSSL genrsa 4096 > "${KEY_DIR}/account.key"
+	RESULT=$?
+	if [ $RESULT -ne 0 ]; then
+	    echo -e "ERROR: Openssl error: $RESULT"
+		exit $OPENSSL_ERROR
+	fi
+}
+
 generate_private_key(){
     if [ -z "$1" ] ; then
         echo -e "ERROR: empty account | domain name"
         exit $EMPTY_PARAM
     fi
-    mkdir -p $KEY_DIR
-    $OPENSSL genrsa 4096 > "${KEY_DIR}/${1}.key"
+    mkdir -p "$KEY_DIR/${1}"
+    $OPENSSL genrsa 4096 > "${KEY_DIR}/${1}/${1}.key"
 	RESULT=$?
 	if [ $RESULT -ne 0 ]; then
 	    echo -e "ERROR: Openssl error: $RESULT"
@@ -52,11 +63,11 @@ generate_certificate_signing_request(){
         echo -e "ERROR: empty domain"
         exit $EMPTY_PARAM
     fi
-    mkdir -p $CSR_DIR
+    mkdir -p "$CSR_DIR/${1}"
     $OPENSSL req \
 			-new -sha256 \
-			-key "${KEY_DIR}/${1}.key" \
-			-subj "/CN=${1}" > "${CSR_DIR}/${1}.csr"
+			-key "${KEY_DIR}/${1}/${1}.key" \
+			-subj "/CN=${1}" > "${CSR_DIR}/${1}/${1}.csr"
 	RESULT=$?
 	if [ $RESULT -ne 0 ]; then
 	    echo -e "ERROR: Openssl error: $RESULT"
@@ -69,16 +80,13 @@ generate_certificate(){
         echo -e "ERROR: empty domain"
         exit $EMPTY_PARAM
     fi
-    mkdir -p $CRT_DIR
-	if [ -z "$2" ] ; then
-        echo -e "ERROR: empty challenge dir"
-        exit $EMPTY_PARAM
-	fi
-	ACME_CHALLENGE_DIR="$2"
+    mkdir -p "$CRT_DIR/${1}"
+	ACME_CHALLENGE_DIR="$CHALLENGE_DIR/${1}"
+	mkdir -p $ACME_CHALLENGE_DIR
 	$PYTHON $ACME_TINY \
 		--account-key "${KEY_DIR}/account.key" \
-		--csr "${CSR_DIR}/${1}.csr" \
-		--acme-dir $ACME_CHALLENGE_DIR > "${CRT_DIR}/${1}.crt"
+		--csr "${CSR_DIR}/${1}/${1}.csr" \
+		--acme-dir $ACME_CHALLENGE_DIR > "${CRT_DIR}/${1}/${1}.crt"
 
 	RESULT=$?
 	if [ $RESULT -ne 0 ]; then
@@ -91,7 +99,7 @@ case "$1" in
     generate_key)
         case "$2" in
             account)
-                generate_private_key "account"
+                generate_account_private_key
                 ;;
             domain)
                 generate_private_key "$3"
