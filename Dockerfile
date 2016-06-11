@@ -16,7 +16,7 @@ ENV WORKDIR_PATH /var/lib/letsencript
 RUN mkdir -p $WORKDIR_PATH
 
 # Create the user acme
-RUN groupadd -r acme && useradd -r -g acme acme .
+RUN groupadd -r acme && useradd -r -m -g acme acme
 
 # Copy the scripts
 COPY manage_certs.sh /home/acme/manage_certs.sh
