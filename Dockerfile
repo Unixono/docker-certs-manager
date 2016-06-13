@@ -18,6 +18,9 @@ RUN mkdir -p $WORKDIR_PATH
 # Create the user acme
 RUN groupadd -r acme && useradd -r -m -g acme acme
 
+# Grant permissions to the working directory
+RUN chown acme:acme $WORKDIR_PATH && chmod 755 $WORKDIR_PATH
+
 # Copy the scripts
 COPY manage_certs.sh /home/acme/manage_certs.sh
 COPY acme-tiny /home/acme/acme-tiny
