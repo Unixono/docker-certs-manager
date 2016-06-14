@@ -29,7 +29,7 @@ ACME_ERROR=2
 helpme(){
     echo -e ">> Certificate manager \n"
     echo -e "Usage: $0 { generate_key { account | domain <domain-value> } } | \
-generate_csr <domain-value> | generate_crt <domain-value> <challenge-dir> }\n"
+generate_csr <domain-value> | generate_crt <domain-value> }\n"
     echo "NOTE: you can't use your account private key as your domain private \
 key!"
 }
