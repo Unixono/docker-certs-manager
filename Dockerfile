@@ -26,6 +26,6 @@ COPY manage_certs.sh /home/acme/manage_certs.sh
 COPY acme-tiny /home/acme/acme-tiny
 
 # Set the user acme as default
-USER ACME
+USER acme
 # Sets the default working directory
 WORKDIR /home/acme
