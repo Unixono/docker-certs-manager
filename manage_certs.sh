@@ -9,10 +9,10 @@
 ###############################################################################
 # Directories where you will store your files. A unique volume should be
 # created for each Directory.
-KEY_DIR=/var/lib/letsencript/key
-CSR_DIR=/var/lib/letsencript/csr
-CRT_DIR=/var/lib/letsencript/crt
-CHALLENGE_DIR=/var/lib/letsencripty/challenges
+KEY_DIR=$WORKDIR_PATH/key
+CSR_DIR=$WORKDIR_PATH/csr
+CRT_DIR=$WORKDIR_PATH/crt
+CHALLENGE_DIR=$WORKDIR_PATHy/challenges
 ###############################################################################
 # Binaries
 ACME_TINY=./acme-tiny/acme_tiny.py
