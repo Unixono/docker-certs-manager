@@ -12,7 +12,7 @@
 KEY_DIR=$WORKDIR_PATH/key
 CSR_DIR=$WORKDIR_PATH/csr
 CRT_DIR=$WORKDIR_PATH/crt
-CHALLENGE_DIR=$WORKDIR_PATHy/challenges
+CHALLENGE_DIR=$WORKDIR_PATH/challenges
 ###############################################################################
 # Binaries
 ACME_TINY=./acme-tiny/acme_tiny.py
