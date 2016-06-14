@@ -37,11 +37,11 @@ key!"
 generate_account_private_key(){
     mkdir -p $KEY_DIR
     $OPENSSL genrsa 4096 > "${KEY_DIR}/account.key"
-	RESULT=$?
-	if [ $RESULT -ne 0 ]; then
-	    echo -e "ERROR: Openssl error: $RESULT"
-		exit $OPENSSL_ERROR
-	fi
+    RESULT=$?
+    if [ $RESULT -ne 0 ]; then
+        echo -e "ERROR: Openssl error: $RESULT"
+        exit $OPENSSL_ERROR
+    fi
 }
 
 generate_private_key(){
@@ -51,11 +51,11 @@ generate_private_key(){
     fi
     mkdir -p "$KEY_DIR/${1}"
     $OPENSSL genrsa 4096 > "${KEY_DIR}/${1}/${1}.key"
-	RESULT=$?
-	if [ $RESULT -ne 0 ]; then
-	    echo -e "ERROR: Openssl error: $RESULT"
-		exit $OPENSSL_ERROR
-	fi
+    RESULT=$?
+    if [ $RESULT -ne 0 ]; then
+        echo -e "ERROR: Openssl error: $RESULT"
+        exit $OPENSSL_ERROR
+    fi
 }
 
 generate_certificate_signing_request(){
@@ -65,14 +65,14 @@ generate_certificate_signing_request(){
     fi
     mkdir -p "$CSR_DIR/${1}"
     $OPENSSL req \
-			-new -sha256 \
-			-key "${KEY_DIR}/${1}/${1}.key" \
-			-subj "/CN=${1}" > "${CSR_DIR}/${1}/${1}.csr"
-	RESULT=$?
-	if [ $RESULT -ne 0 ]; then
-	    echo -e "ERROR: Openssl error: $RESULT"
-		exit $OPENSSL_ERROR
-	fi
+            -new -sha256 \
+            -key "${KEY_DIR}/${1}/${1}.key" \
+            -subj "/CN=${1}" > "${CSR_DIR}/${1}/${1}.csr"
+    RESULT=$?
+    if [ $RESULT -ne 0 ]; then
+        echo -e "ERROR: Openssl error: $RESULT"
+        exit $OPENSSL_ERROR
+    fi
 }
 
 generate_certificate(){
@@ -81,18 +81,18 @@ generate_certificate(){
         exit $EMPTY_PARAM
     fi
     mkdir -p "$CRT_DIR/${1}"
-	ACME_CHALLENGE_DIR="$CHALLENGE_DIR/${1}"
-	mkdir -p $ACME_CHALLENGE_DIR
-	$PYTHON $ACME_TINY \
-		--account-key "${KEY_DIR}/account.key" \
-		--csr "${CSR_DIR}/${1}/${1}.csr" \
-		--acme-dir $ACME_CHALLENGE_DIR > "${CRT_DIR}/${1}/${1}.crt"
+    local ACME_CHALLENGE_DIR="${CHALLENGE_DIR}/${1}"
+    mkdir -p $ACME_CHALLENGE_DIR
+    $PYTHON $ACME_TINY \
+        --account-key "${KEY_DIR}/account.key" \
+        --csr "${CSR_DIR}/${1}/${1}.csr" \
+        --acme-dir $ACME_CHALLENGE_DIR > "${CRT_DIR}/${1}/${1}.crt"
 
-	RESULT=$?
-	if [ $RESULT -ne 0 ]; then
-	    echo -e "ERROR: ACME error: $RESULT"
-		exit $ACME_ERROR
-	fi
+    RESULT=$?
+    if [ $RESULT -ne 0 ]; then
+        echo -e "ERROR: ACME error: $RESULT"
+        exit $ACME_ERROR
+    fi
 }
 
 case "$1" in
