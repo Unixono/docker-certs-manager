@@ -26,4 +26,4 @@ COPY acme-tiny /acme/acme-tiny
 RUN chmod 755 /acme
 
 # Sets the default working directory
-WORKDIR /home/acme
+WORKDIR /acme
