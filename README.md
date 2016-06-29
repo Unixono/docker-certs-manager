@@ -15,6 +15,7 @@ All files will be stored in a main directory of your choise (for this tutorial, 
 
 For example, for the domain `example.com`, you'll have:
 
+    /data/letsencrypt/key/account.key
     /data/letsencrypt/key/example.com/example.com.key
     /data/letsencrypt/csr/example.com/example.com.csr
     /data/letsencrypt/crt/example.com/example.com.crt
