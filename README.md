@@ -24,7 +24,7 @@ For example, for the domain `example.com`, you'll have:
 ### How it works, and what's the "challenges" directory?
 After generating the domain key, and certificate signing request file, you are searching for generating the domain certificate, but first, you must prove you own the domain you want a certificate for. Let's Encrypt requires you host some challenge files on them (Particularly under `http://<domain>/.well-known/acme-challenge/`).
 
-But, how do you get those challente files? Don't worry, the script [acme-tiny](https://github.com/diafygi/acme-tiny) will write them for you, connect to Let's encrypt to validate you own the domain, and finally will generate your certificate. **NOTE:** Let's Encrypt will perform a plain HTTP request to port 80 on your server, so you must serve the challenge files via HTTP (a redirect to HTTPS is fine too).
+But, how do you get those challente files? Don't worry, the script [acme-tiny](https://github.com/diafygi/acme-tiny) will write them for you, connect to Let's encrypt to validate you own the domain, and finally will generate your certificate. Let's Encrypt will perform a plain HTTP request to port 80 on your server, so you must serve the challenge files via HTTP (a redirect to HTTPS is fine too).
 
 ### How to use it?
 
@@ -59,7 +59,8 @@ But, how do you get those challente files? Don't worry, the script [acme-tiny](h
     docker run --rm -v /data/letsencrypt/:/var/letsencrypt/ facundovictor/docker-certs-manager ./manage_certs.sh generate_csr domain example.com
     ```
 
-6. Make your website host challenge files: You must prove you own the domains you want a certificate for, so Let's Encrypt will perform a plain HTTP request to port 80 on your server, and will ask for the challenge files. This script will generate and write those files, so all you need to do is make sure that the `/data/letsencrypt/challenges/<your-domain>/` folder is served under the ".well-known/acme-challenge/" url path. NOTE: Let's Encrypt will perform a plain HTTP request to port 80 on your server, so you must serve the challenge files via HTTP (a redirect to HTTPS is fine too).
+6. Make your website host challenge files: You must prove you own the domains you want a certificate for, so Let's Encrypt will perform a plain HTTP request to port 80 on your server, and will ask for the challenge files. This script will generate and write those files, so all you need to do is make sure that the `/data/letsencrypt/challenges/<your-domain>/` folder is served under the `/.well-known/acme-challenge/` url path.
+
 
     #make some challenge folder (modify to suit your needs)
     mkdir -p /var/www/challenges/
@@ -75,6 +76,9 @@ But, how do you get those challente files? Don't worry, the script [acme-tiny](h
 
         ...the rest of your config
     }
+
+
+  **NOTE:** Let's Encrypt will perform a plain HTTP request to port 80 on your server, so you must serve the challenge files via HTTP (a redirect to HTTPS is fine too).
 
 7. Generate your domain certificate:
 
