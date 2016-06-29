@@ -22,9 +22,9 @@ For example, for the domain `example.com`, you'll have:
     /data/letsencrypt/challenges/example.com/
 
 ### How it works, and what's the "challenges" directory?
-After generating the domain key, and certificate signing request file, you are searching for generating the domain certificate. For this, you must prove you own the domains you want a certificate for. So, Let's Encrypt requires you host some challenge files on them (Particularly under `http://<domain>/.well-known/acme-challenge/`).
+After generating the domain key, and certificate signing request file, you are searching for generating the domain certificate, but first, you must prove you own the domain you want a certificate for. Let's Encrypt requires you host some challenge files on them (Particularly under `http://<domain>/.well-known/acme-challenge/`).
 
-But, how do you get those challente files? Don't worry, the script [acme-tiny](https://github.com/diafygi/acme-tiny) will write them for you, connect to Let's encrypt to validate you own the domain, and finally will generate your domain certificate. NOTE: Let's Encrypt will perform a plain HTTP request to port 80 on your server, so you must serve the challenge files via HTTP (a redirect to HTTPS is fine too).
+But, how do you get those challente files? Don't worry, the script [acme-tiny](https://github.com/diafygi/acme-tiny) will write them for you, connect to Let's encrypt to validate you own the domain, and finally will generate your certificate. **NOTE:** Let's Encrypt will perform a plain HTTP request to port 80 on your server, so you must serve the challenge files via HTTP (a redirect to HTTPS is fine too).
 
 ### How to use it?
 
@@ -41,13 +41,13 @@ But, how do you get those challente files? Don't worry, the script [acme-tiny](h
     mkdir -p /data/letsencrypt/
     ```
 
-3. Generate your `Let's encrypt` account key:
+3. Generate your **Let's encrypt** account key:
 
     ```sh
     docker run --rm -v /data/letsencrypt/:/var/letsencrypt/ facundovictor/docker-certs-manager ./manage_certs.sh generate_key account
     ```
 
-4. Generate your domain private key (This will use `example.com`):
+4. Generate your domain private key (For the sake of explain it, we'll continue using the domain `example.com`):
 
     ```sh
     docker run --rm -v /data/letsencrypt/:/var/letsencrypt/ facundovictor/docker-certs-manager ./manage_certs.sh generate_key domain example.com
