@@ -78,7 +78,7 @@ But, how do you get those challente files? Don't worry, the script [acme-tiny](h
     }
     ```
 
-  **NOTE:** [**Let's Encrypt**](https://letsencrypt.org/) will perform a plain HTTP request to port 80 on your server, so you must serve the challenge files via HTTP (a redirect to HTTPS is fine too).
+  **NOTE:** [Let's Encrypt](https://letsencrypt.org/) will perform a plain HTTP request to port 80 on your server, so you must serve the challenge files via HTTP (a redirect to HTTPS is fine too).
 
 7. Generate your **domain certificate**:
 
