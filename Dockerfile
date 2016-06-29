@@ -12,7 +12,7 @@ RUN echo "deb http://archive.ubuntu.com/ubuntu/ $(lsb_release -sc) main universe
     && apt-get install -y python openssl
 
 # Path where the keys, csrs, certs and challenges will be stored
-ENV WORKDIR_PATH /var/letsencript
+ENV WORKDIR_PATH /var/letsencrypt
 RUN mkdir -p $WORKDIR_PATH
 
 # Grant permissions to the working directory
