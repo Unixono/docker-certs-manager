@@ -21,6 +21,11 @@ For example, for the domain `example.com`, you'll have:
     /data/letsencrypt/crt/example.com/example.com.crt
     /data/letsencrypt/challenges/example.com/
 
+### How it works, and what's the "challenges" directory?
+After generating the domain key, and certificate signing request file, you are searching for generating the domain certificate. For this, you must prove you own the domains you want a certificate for. So, Let's Encrypt requires you host some challenge files on them (Particularly under `http://<domain>/.well-known/acme-challenge/`).
+
+But, how do you get those challente files? Don't worry, the script [acme-tiny](https://github.com/diafygi/acme-tiny) will write them for you, connect to Let's encrypt to validate you own the domain, and finally will generate your domain certificate. NOTE: Let's Encrypt will perform a plain HTTP request to port 80 on your server, so you must serve the challenge files via HTTP (a redirect to HTTPS is fine too).
+
 ### How to use it?
 
   - Pull the image from the hub:
