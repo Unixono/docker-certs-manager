@@ -29,4 +29,4 @@ RUN chmod 755 /acme
 WORKDIR /acme
 
 # Sets the default script
-ENTRYPOINT [ "manage_certs.sh" ]
+ENTRYPOINT [ "/acme/manage_certs.sh" ]
