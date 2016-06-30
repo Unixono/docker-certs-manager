@@ -44,19 +44,19 @@ But, how do you get those challente files? Don't worry, the script [acme-tiny](h
 3. Generate your [Let's Encrypt](https://letsencrypt.org/) **account key**:
 
     ```sh
-    docker run --rm -v /data/letsencrypt/:/var/letsencrypt/ facundovictor/docker-certs-manager ./manage_certs.sh generate_key account
+    docker run --rm -v /data/letsencrypt/:/var/letsencrypt/ facundovictor/docker-certs-manager generate_key account
     ```
 
 4. Generate your **domain private key** (For the sake of explain it, we'll continue using the domain `example.com`):
 
     ```sh
-    docker run --rm -v /data/letsencrypt/:/var/letsencrypt/ facundovictor/docker-certs-manager ./manage_certs.sh generate_key domain example.com
+    docker run --rm -v /data/letsencrypt/:/var/letsencrypt/ facundovictor/docker-certs-manager generate_key domain example.com
     ```
 
 5. Generate your **domain CSR** (certificate signing request): The **ACME** protocol (what [Let's Encrypt](https://letsencrypt.org/) uses) requires a CSR file to be submitted to it, even for renewals. You can use the same CSR for multiple renewals. NOTE: you can't use your account private key as your domain private key!
 
     ```sh
-    docker run --rm -v /data/letsencrypt/:/var/letsencrypt/ facundovictor/docker-certs-manager ./manage_certs.sh generate_csr domain example.com
+    docker run --rm -v /data/letsencrypt/:/var/letsencrypt/ facundovictor/docker-certs-manager generate_csr domain example.com
     ```
 
 6. Make your website **host challenge files**: You must prove you own the domains you want a certificate for, so [Let's Encrypt](https://letsencrypt.org/) will perform a plain HTTP request to port 80 on your server, and will ask for the challenge files. This script will generate and write those files, so all you need to do is make sure that the `/data/letsencrypt/challenges/<your-domain>/` folder is served under the `/.well-known/acme-challenge/` url path.
@@ -83,7 +83,7 @@ But, how do you get those challente files? Don't worry, the script [acme-tiny](h
 7. Generate your **domain certificate**:
 
     ```sh
-    docker run --rm -v /data/letsencrypt/:/var/letsencrypt/ facundovictor/docker-certs-manager ./manage_certs.sh generate_crt domain example.com
+    docker run --rm -v /data/letsencrypt/:/var/letsencrypt/ facundovictor/docker-certs-manager generate_crt domain example.com
     ```
 
 To be continued...
