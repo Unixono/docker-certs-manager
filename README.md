@@ -1,10 +1,10 @@
 # docker-certs-manager
 A simple key-csr-crt manager for [**Let's Encrypt**](https://letsencrypt.org/), that uses the **ACME** protocol to generate the certificates. Internally uses the python script [acme-tiny](https://github.com/diafygi/acme-tiny).
 
-### Why is useful?
+### Why it's useful?
 It helps in container environments like CoreOS. Centralizes the creation, distribution and renewal of domain certificates. Also, with a cron or systemd-timer, you could configure auto-renewal certificates for your domains.
 
-### How it distributes the files?
+### How does it distribute the files?
 All files will be stored in a main directory of your choise (for this tutorial, we'll use `/data/letsencrypt`), and categorized in the subfolders:
 
   - `/data/letsencrypt/key/account.key`             --> This is fixed and it will store the Let's encrypt account key.
