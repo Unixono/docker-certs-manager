@@ -86,4 +86,11 @@ But, how do you get those challente files? Don't worry, the script [acme-tiny](h
     docker run --rm -v /data/letsencrypt/:/var/letsencrypt/ facundovictor/docker-certs-manager generate_crt domain example.com
     ```
 
+### Configure auto-renewal
+You don't need anything else to renew the certificate, just repeating the step number 7 should do the work. Thus, for configure the renewal every 3 months, a cronjob is enough:
+
+    ```sh
+    00 00 00 */3 * /path/to/docker run --rm -v /data/letsencrypt/:/var/letsencrypt/ facundovictor/docker-certs-manager generate_crt domain example.com
+    ```
+
 To be continued...
