@@ -87,10 +87,41 @@ But, how do you get those challente files? Don't worry, the script [acme-tiny](h
     ```
 
 ### Configure auto-renewal
-You don't need anything else to renew the certificate, just repeating the step number 7 should do the work. Thus, for configure the renewal every 3 months, a cronjob is enough:
+You don't need anything else to renew the certificate, just repeating the step **number 7** should do the work. Thus, for configure the renewal every 3 months, a cronjob is enough:
 
     ```sh
-    00 00 00 */3 * /path/to/docker run --rm -v /data/letsencrypt/:/var/letsencrypt/ facundovictor/docker-certs-manager generate_crt domain example.com
+    00 00 00 */3 *      /path/to/docker run --rm -v /data/letsencrypt/:/var/letsencrypt/ facundovictor/docker-certs-manager generate_crt domain example.com
     ```
 
-To be continued...
+Or if you prefer to set up a systemd timer, then add the following files in **/etc/systemd/system/** or **/usr/lib/systemd/system**:
+
+    **example.com.renewal.service**
+
+    ```sh
+    [Unit]
+    Description=cxample.com renewal
+
+    [Service]
+    Type=simple
+    ExecStart=/path/to/docker run --rm -v /data/letsencrypt/:/var/letsencrypt/ facundovictor/docker-certs-manager generate_crt domain example.com
+    ```
+
+    **example.com.renewal.timer**
+
+    ```sh
+    [Unit]
+    Description=cxample.com renewal every 3 months
+
+    [Timer]
+    # Time to wait after booting before we run first time
+    OnBootSec=10min
+    OnCalendar=* *-0/3-1 00:00:00
+    Unit=example.com.renewal.service
+    ```
+
+And finally enable the timer:
+
+    ```sh
+    systemctl enable example.com.renewal.timer
+    ```
+
